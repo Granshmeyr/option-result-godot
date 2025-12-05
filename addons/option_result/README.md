@@ -4,7 +4,7 @@ This plugin enables absence-of-value semantics in Godot, removing the concept of
 
 Code generation is used to achieve this. All detected types, including built-in types, will have an Option and Result counter-part generated. For example, `int` will generate `Oint` and `Rint`. A class called `ZombieEnemy` will generate `OZombieEnemy` and `RZombieEnemy`.
 
-Check out the included project for examples of the method chaining workaround, pattern matching, and unit tests for both Option and result land. Make sure to read the bullet points below. Check the bottom of this document for explanations on the method chaining workaround and pattern matching syntax.
+Check out the included project along with the bottom of this document for examples of the method chaining workaround, pattern matching, and unit tests for both Option and Result land. Make sure to read the bullet points below.
 
 **What problem(s) does this solve?**
 
@@ -20,24 +20,26 @@ Check out the included project for examples of the method chaining workaround, p
 - None of the types cross-reference each other by design which prevents the parser from exploding. Due to this, method chaining is replaced with hacky syntactic sugar. This workaround is entirely dynamic and not static at all. Many dynamic asserts are included for safety with useful messages. See below.
 - Pattern matching is not done through the `match` keyword. Incorrectly typed lambdas are caught during runtime by Godot as per usual. Dynamic asserts are included for safety with useful messages. See below. The semantics are *kind of* similar to Rust, in that you can match Option(s) to Some and None, but you cannot match against expressions directly in the cases.
 - Converting between Option and Result land will return either `OVariant` or `RVariant` due to the conversion being inherently dynamic. This value should be cast one way or another.
-- There is no way to explicitly generate only certain types, because I that is not functionality I want to implement. I want this plugin to be a lazy drop-in solution with no configuration.
+- There is no way to explicitly generate only certain types, because that is not functionality I want to implement. I want this plugin to be a lazy drop-in solution with no configuration.
 
 **Is this actually useful and production ready?**
 - I developed this as a drop-in solution to the tween example above. It immediately solved the issue and felt clean doing so.
 - This is not production ready and no testing has been performed other than API unit tests and me having fun.
-- There are seemingly no runtime performance issues other than the obvious boxing of your optional values.
+- There are seemingly no editor or runtime performance issues other than the obvious boxing of your optional values.
 
 ## Getting Started
 
 1. Copy the plugin folder into your `res://addons/` folder.
-2. Click `Project → Tools → Option<T> & Result<T> → Create Core Files (res://optres/core/*)`
-3. Click `Project → Tools → Option<T> & Result<T> → Generate Personas (res://optres/persona/*)`
-4. Expect a crash or a very long script parse. The script parse will only occur once.
-5. Restart the editor if you want to make sure the one-time script parse actually occurred.
+2. Enable the plugin.
+3. Click `Project → Tools → Option<T> & Result<T> → Create Core Files (res://optres/core/*)`
+4. Click `Project → Tools → Option<T> & Result<T> → Generate Personas (res://optres/persona/*)`
+5. Expect a crash or a very long script parse. The script parse will only occur once.
+	- NOTE: Built-in types are currently hard-coded in a list taken from `4.4.1`. If you are missing a type for some reason, you might receive an initial explosion of errors. In this case create an issue or something.
+6. Restart the editor if you want to make sure the one-time script parse actually occurred.
 
 All generated files are contained within `res://optres/` and can be deleted without affecting the plugin directly.
 
-Generating files for new types you create is as simple as repeating step three. This will not recreate all types, only new types that aren't generated yet.
+Generating files for new types you create is as simple as repeating step four. This will not recreate all types, only new types that aren't generated yet.
 
 ## Pattern Matching
 
@@ -96,7 +98,7 @@ Explanation (be prepared for hacky stuff):
 
 ## Other Notable Things
 
-- The methods `zip_with_to_c`, `map_to`, `map_to_c`, `map_or_to`, `map_or_to_c`, `map_or_else_to`, `map_or_else_to_c`, `and_then_to`, `and_then_to_c`, `and_to`, `and_to_c` are suffixed with `_to` because of the behavior difference from their original counterpart. Because generated types cannot cross-reference each other, I had to decide to make the input to `map` variant *or* the output, for example. I chose to make the input variant and the output static, as this leads to the safest behavior, as the lambda can statically type the input. Anyways, these methods are static—not instance methods. `Oint.map_to` means you are mapping *to* an `Oint`. Check the project example because it is hard to explain.
+- The methods `zip_with_to_c`, `map_to`, `map_to_c`, `map_or_to`, `map_or_to_c`, `map_or_else_to`, `map_or_else_to_c`, `and_then_to`, `and_then_to_c`, `and_to`, `and_to_c` are suffixed with `_to` because of the behavior difference from their original counterpart. Because generated types cannot cross-reference each other, I had to—for example—decide to make the input to `map` variant *or* the output. I chose to make the input variant and the output static, as this leads to the safest behavior, as the lambda can statically type the input. Anyways, these methods are static—they are not instance methods. `Oint.map_to` means you are mapping *to* an `Oint`. Check the project example because it is hard to explain.
 - `OUnit`, `RUnit`, `OVariant`, and `RVariant` are included as special types.
-	- `OUnit` contains a possible backing value of type `Unit`, which is only accessible as a singleton instance via `Unit.instance`. This is used to create an Option that simulates a bool, if that is for some reason desired.
+	- `OUnit` contains a possible backing value of type `Unit`, which is only accessible as a singleton instance via `Unit.instance`. This is used to create an Option that simulates a bool, if that is for some reason desired. The `Unit` type is of course a simulation of `()` from Rust and similar concepts in other languages.
 	- `OVariant` contains a possible backing value of type `Variant`. This is implemented as a workaround for the constraint that Option and Result types in this plugin cannot actually convert to other types in a static way, due to the lack of generic types in GDScript. This is used when converting between Option and Result land.

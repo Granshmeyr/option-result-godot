@@ -104,6 +104,7 @@ func _on_generate_static_typing() -> void:
 			if (
 				_PRE_GENERATED_PERSONA_BASES.has(stripped_name) or
 				_ALL_VARIANT_CLASS_NAMES.has(stripped_name) or
+				all_project_class_names.has(stripped_name) or
 				engine_class_list.has(stripped_name)
 			):
 				return false
