@@ -30,14 +30,15 @@ Check out the included project for examples of the method chaining workaround, p
 ## Getting Started
 
 1. Copy the plugin folder into your `res://addons/` folder.
-2. Click `Project → Tools → Option<T> & Result<T> → Create Core Files (res://optres/core/*)`
-3. Click `Project → Tools → Option<T> & Result<T> → Generate Personas (res://optres/persona/*)`
-4. Expect a crash or a very long script parse. The script parse will only occur once.
-5. Restart the editor if you want to make sure the one-time script parse actually occurred.
+2. Enable the plugin.
+3. Click `Project → Tools → Option<T> & Result<T> → Create Core Files (res://optres/core/*)`
+4. Click `Project → Tools → Option<T> & Result<T> → Generate Personas (res://optres/persona/*)`
+5. Expect a crash or a very long script parse. The script parse will only occur once.
+6. Restart the editor if you want to make sure the one-time script parse actually occurred.
 
 All generated files are contained within `res://optres/` and can be deleted without affecting the plugin directly.
 
-Generating files for new types you create is as simple as repeating step three. This will not recreate all types, only new types that aren't generated yet.
+Generating files for new types you create is as simple as repeating step four. This will not recreate all types, only new types that aren't generated yet.
 
 ## Pattern Matching
 
