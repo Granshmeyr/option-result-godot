@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=3 uid="uid://cl33w18snyl81"]
+
+[ext_resource type="Script" uid="uid://gbjql7w1fx0j" path="res://option_tests.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://d3u4ffn2gbfgo" path="res://result_tests.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://cixyl4cp621yn" path="res://option_match.gd" id="3_1bvp3"]
+[ext_resource type="Script" uid="uid://cq241twbhvf27" path="res://result_chain.gd" id="3_7mycd"]
+[ext_resource type="Script" uid="uid://dsjbs0w6wdshq" path="res://print_thing.gd" id="4_272bh"]
+[ext_resource type="Script" uid="uid://dm08dqk0jp7c3" path="res://result_match.gd" id="4_lquwl"]
+[ext_resource type="Script" uid="uid://b63l8qlh3blod" path="res://option_chain.gd" id="5_lquwl"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Result" type="Node" parent="."]
+
+[node name="ResultTests" type="Node" parent="Result"]
+script = ExtResource("2_0xm2m")
+
+[node name="PrintSeparator" type="Node" parent="Result"]
+script = ExtResource("4_272bh")
+thing = "=========="
+
+[node name="ResultMatch" type="Node" parent="Result"]
+script = ExtResource("4_lquwl")
+
+[node name="PrintSeparator2" type="Node" parent="Result"]
+script = ExtResource("4_272bh")
+thing = "=========="
+
+[node name="ResultChain" type="Node" parent="Result"]
+script = ExtResource("3_7mycd")
+
+[node name="PrintEmptyLine" type="Node" parent="."]
+script = ExtResource("4_272bh")
+
+[node name="PrintEmptyLine2" type="Node" parent="."]
+script = ExtResource("4_272bh")
+
+[node name="Option" type="Node" parent="."]
+
+[node name="OptionTests" type="Node" parent="Option"]
+script = ExtResource("1_ig7tw")
+
+[node name="PrintSeparator" type="Node" parent="Option"]
+script = ExtResource("4_272bh")
+thing = "=========="
+
+[node name="OptionMatch" type="Node" parent="Option"]
+script = ExtResource("3_1bvp3")
+
+[node name="PrintSeparator2" type="Node" parent="Option"]
+script = ExtResource("4_272bh")
+thing = "=========="
+
+[node name="OptionChain" type="Node" parent="Option"]
+script = ExtResource("5_lquwl")
