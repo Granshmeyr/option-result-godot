@@ -4,7 +4,7 @@ This plugin enables absence-of-value semantics in Godot, removing the concept of
 
 Code generation is used to achieve this. All detected types, including built-in types, will have an Option and Result counter-part generated. For example, `int` will generate `Oint` and `Rint`. A class called `ZombieEnemy` will generate `OZombieEnemy` and `RZombieEnemy`.
 
-Check out the included project for examples of the method chaining workaround, pattern matching, and unit tests for both Option and Result land. Make sure to read the bullet points below. Check the bottom of this document for explanations on the method chaining workaround and pattern matching syntax.
+Check out the included project along with the bottom of this document for examples of the method chaining workaround, pattern matching, and unit tests for both Option and Result land. Make sure to read the bullet points below.
 
 **What problem(s) does this solve?**
 
@@ -98,7 +98,7 @@ Explanation (be prepared for hacky stuff):
 
 ## Other Notable Things
 
-- The methods `zip_with_to_c`, `map_to`, `map_to_c`, `map_or_to`, `map_or_to_c`, `map_or_else_to`, `map_or_else_to_c`, `and_then_to`, `and_then_to_c`, `and_to`, `and_to_c` are suffixed with `_to` because of the behavior difference from their original counterpart. Because generated types cannot cross-reference each other, I had to for example decide to make the input to `map` variant *or* the output. I chose to make the input variant and the output static, as this leads to the safest behavior, as the lambda can statically type the input. Anyways, these methods are static—they are not instance methods. `Oint.map_to` means you are mapping *to* an `Oint`. Check the project example because it is hard to explain.
+- The methods `zip_with_to_c`, `map_to`, `map_to_c`, `map_or_to`, `map_or_to_c`, `map_or_else_to`, `map_or_else_to_c`, `and_then_to`, `and_then_to_c`, `and_to`, `and_to_c` are suffixed with `_to` because of the behavior difference from their original counterpart. Because generated types cannot cross-reference each other, I had to—for example—decide to make the input to `map` variant *or* the output. I chose to make the input variant and the output static, as this leads to the safest behavior, as the lambda can statically type the input. Anyways, these methods are static—they are not instance methods. `Oint.map_to` means you are mapping *to* an `Oint`. Check the project example because it is hard to explain.
 - `OUnit`, `RUnit`, `OVariant`, and `RVariant` are included as special types.
 	- `OUnit` contains a possible backing value of type `Unit`, which is only accessible as a singleton instance via `Unit.instance`. This is used to create an Option that simulates a bool, if that is for some reason desired. The `Unit` type is of course a simulation of `()` from Rust and similar concepts in other languages.
 	- `OVariant` contains a possible backing value of type `Variant`. This is implemented as a workaround for the constraint that Option and Result types in this plugin cannot actually convert to other types in a static way, due to the lack of generic types in GDScript. This is used when converting between Option and Result land.
